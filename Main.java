@@ -1,12 +1,16 @@
 import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Main
 {
     public static void main(String[] args)
     {
         ArrayList<Game> gameList = new ArrayList<Game>();
+
+        HashMap<String, HashMap<PLAYER_COLOR, Integer>> squareFrequencies = new HashMap<String, HashMap<PLAYER_COLOR, Integer>>();
+        HashMap<String, HashMap<PLAYER_COLOR, ArrayList<PLAYER_COLOR>>> winFrequencies = new HashMap<String, HashMap<PLAYER_COLOR, ArrayList<PLAYER_COLOR>>>();
 
         try
         {
@@ -39,6 +43,14 @@ public class Main
         {
             e.printStackTrace();
         }
+
+        for(Game game : gameList)
+        {
+            game.extractData(squareFrequencies, winFrequencies);
+        }
+
+        // System.out.println(winFrequencies.toString());
+        System.out.println(squareFrequencies.toString());
 
     }
 }
