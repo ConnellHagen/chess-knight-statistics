@@ -2,4 +2,5 @@
 * text=auto
 
 # Apply override to all files in the directory
-src/lib/* src/include/SDL2/* linguist-vendored
+src/lib/* linguist-vendored
+src/include/SDL2/* linguist-vendored
