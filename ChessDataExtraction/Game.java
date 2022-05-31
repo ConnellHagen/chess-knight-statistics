@@ -1,3 +1,5 @@
+package ChessDataExtraction;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,7 +22,6 @@ public class Game
 
     private String[] splitMoves()
     {
-        // (\s*\d+\.+\s)|(\s{\s\[%eval\s-*((\d+\.\d+)|(#\d))\]\s\}\s)|([+!?#]+)|(\d\/*\d*-\d\/*\d*)|(\s)
         return moves.split("((\\s*\\d+\\.+\\s)|(\\s\\{\\s\\[%eval\\s-*((\\d+\\.\\d+)|(#\\d))\\]\\s\\}\\s)|([+!?#]+)|(\\d\\/*\\d*-\\d\\/*\\d*)|(\\s))");
     }
     //                              square,         knight color, number of turns spent there          square          knight color,           winner color

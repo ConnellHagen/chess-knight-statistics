@@ -1,3 +1,5 @@
+package ChessDataExtraction;
+
 import java.io.File;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ public class ChessDatabase
     private HashMap<String, HashMap<PLAYER_COLOR, Integer>> squareFrequencies;
     private HashMap<String, HashMap<PLAYER_COLOR, ArrayList<PLAYER_COLOR>>> winFrequencies;
 
-    private int totalTurns;
+    private HashMap<PLAYER_COLOR, Integer> totalTurns;
     private int totalGames;
     private HashMap<String, HashMap<PLAYER_COLOR, Double>> squarePercentTime;
     private HashMap<String, HashMap<PLAYER_COLOR, Double>> squarePercentWin;
@@ -21,12 +23,20 @@ public class ChessDatabase
         squareFrequencies = new HashMap<String, HashMap<PLAYER_COLOR, Integer>>();
         winFrequencies = new HashMap<String, HashMap<PLAYER_COLOR, ArrayList<PLAYER_COLOR>>>();
 
+        totalTurns = new HashMap<PLAYER_COLOR, Integer>();
+
         squarePercentTime = new HashMap<String, HashMap<PLAYER_COLOR, Double>>();
         squarePercentWin = new HashMap<String, HashMap<PLAYER_COLOR, Double>>();
 
         extractData(database);
         calculateMetaData();
     }
+    
+    public HashMap<String, HashMap<PLAYER_COLOR, Integer>> getSquareFrequencies(){ return squareFrequencies; }
+    public HashMap<String, HashMap<PLAYER_COLOR, ArrayList<PLAYER_COLOR>>> getWinFrequencies(){ return winFrequencies; }
+    public int getTotalGames(){ return totalGames; }
+    public HashMap<String, HashMap<PLAYER_COLOR, Double>> getSquarePercentTime(){ return squarePercentTime; }
+    public HashMap<String, HashMap<PLAYER_COLOR, Double>> getSquarePercentWin(){ return squarePercentWin; }
 
     public void addData(File database)
     {
@@ -78,54 +88,49 @@ public class ChessDatabase
     {
         squarePercentTime.clear();
         squarePercentWin.clear();
+        totalTurns.clear();
         totalGames = gameList.size();
 
-        String[] squareLetters = {"a", "b", "c", "d", "e", "f", "g", "h"};
-        String[] squareNumbers = {"1", "2", "3", "4", "5", "6", "7", "8"};
-        for(String letter : squareLetters)
-        {
-            for(String number : squareNumbers)
-            {
-                String coordinate = letter + number;
+        PLAYER_COLOR[] colors = {PLAYER_COLOR.WHITE, PLAYER_COLOR.BLACK};
 
-                totalTurns += squareFrequencies.get(coordinate).get(PLAYER_COLOR.WHITE);
-                totalTurns += squareFrequencies.get(coordinate).get(PLAYER_COLOR.BLACK);
-                totalGames += winFrequencies.get(coordinate).get(PLAYER_COLOR.WHITE).size();
-                totalGames += winFrequencies.get(coordinate).get(PLAYER_COLOR.BLACK).size();
+        String letters = "abcdefgh";
+        String numbers = "12345678";
+        ArrayList<String> coordinates = new ArrayList<String>();
+        for(int i = 0; i < 8; i ++)
+        {
+            for(int j = 0; j < 8; j++)
+            {
+                coordinates.add(letters.substring(i, i + 1) + numbers.substring(j, j + 1));
+            }
+        }
+        
+        for(String coord : coordinates)
+        {
+            for(PLAYER_COLOR color : colors)
+            {
+                totalTurns.putIfAbsent(color, 0);
+                totalTurns.put(color, totalTurns.get(color) + squareFrequencies.get(coord).get(color));
+            }
+        }
+        for(String coord : coordinates)
+        {
+            squarePercentTime.put(coord, new HashMap<PLAYER_COLOR, Double>());
+            squarePercentWin.put(coord, new HashMap<PLAYER_COLOR, Double>());
+
+            for(PLAYER_COLOR color : colors)
+            {
+                squarePercentTime.get(coord).put(color, (double)(squareFrequencies.get(coord).get(color)) / totalTurns.get(color) * 100);
+
+                ArrayList<PLAYER_COLOR> winsList = winFrequencies.get(coord).get(color);
+                int wins = 0;
+                for(PLAYER_COLOR winner : winsList)
+                {
+                    if(winner == color) wins++;
+                }
+                squarePercentWin.get(coord).put(color, (double)wins / winsList.size() * 100);
             }
         }
 
-        for(String letter : squareLetters)
-        {
-            for(String number : squareNumbers)
-            {
-                String coordinate = letter + number;
-                PLAYER_COLOR[] colors = {PLAYER_COLOR.WHITE, PLAYER_COLOR.BLACK};
-
-                squarePercentTime.put(coordinate, new HashMap<PLAYER_COLOR, Double>());
-                squarePercentWin.put(coordinate, new HashMap<PLAYER_COLOR, Double>());
-
-                for(PLAYER_COLOR color : colors)
-                {
-                    squarePercentTime.get(coordinate).put(color, (double)(squareFrequencies.get(coordinate).get(color)) / totalTurns * 100);
-
-                    ArrayList<PLAYER_COLOR> winsList = winFrequencies.get(coordinate).get(color);
-                    int wins = 0;
-                    for(PLAYER_COLOR winner : winsList)
-                    {
-                        if(winner == color) wins++;
-                    }
-                    squarePercentWin.get(coordinate).put(color, (double)wins / winsList.size() * 100);
-                }
-            }
-        } 
     }
 
-    public void printMetaData()
-    {
-        System.out.println("Percent Time Spent On Square:\n");
-        System.out.println(squarePercentTime.toString());
-        System.out.println("\n\nPercent Time Won On Square:\n");
-        System.out.println(squarePercentWin.toString());
-    }
 }

@@ -1,6 +1,7 @@
 default:
-	javac *.java
+	make clean
+	javac -cp ".;lib/*" *.java
 	java Main
 
 clean:
-	-rm *.class
+	-rm */*.class *.class *.json
