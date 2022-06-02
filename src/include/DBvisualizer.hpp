@@ -5,11 +5,12 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#include "RenderWindow.hpp"
 #include "utils.hpp"
 #include "Tile.hpp"
 #include "GUI.hpp"
 #include "Divider.hpp"
+#include "RenderWindow.hpp"
+
 
 class DBvisualizer
 {
@@ -33,7 +34,8 @@ private:
 
     SDL_Texture* color_switch_white;
     SDL_Texture* color_switch_black;
-    SDL_Texture* color_switch_hover;
+    SDL_Texture* color_switch_white_hover;
+    SDL_Texture* color_switch_black_hover;
     SDL_Texture* color_switch_pressed;
 
     Divider board_display;

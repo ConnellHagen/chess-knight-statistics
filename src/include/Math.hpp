@@ -1,8 +1,9 @@
 #ifndef math_h
 #define math_h
 
-#include <iostream>
 #include <SDL2/SDL.h>
+#include <iostream>
+
 
 struct Vector2f
 {

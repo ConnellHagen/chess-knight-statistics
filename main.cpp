@@ -5,18 +5,22 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "utils.hpp"
 #include "Math.hpp"
+#include "utils.hpp"
 #include "RenderWindow.hpp"
 #include "DBvisualizer.hpp"
 
 
+// static variables
 int utils::display::ORIG_DISPLAY_X;
 int utils::display::ORIG_DISPLAY_Y;
 int utils::display::DISPLAY_WIDTH;
 int utils::display::DISPLAY_HEIGHT;
 int utils::display::DISPLAY_X;
 int utils::display::DISPLAY_Y;
+
+bool Button::mouse_clicked = false;
+bool Button::mouse_held = false;
 
 int main(int argc, char* args[])
 {
@@ -50,7 +54,7 @@ int main(int argc, char* args[])
     SDL_Event event;
 
     // 0: left click
-    std::vector<bool> key_pushes = std::vector<bool>(1, false);
+    std::vector<bool> key_pushes = std::vector<bool>(2, false);
     Vector2i mouse_coords;
 
     while(running)

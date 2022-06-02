@@ -2,8 +2,8 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 
-#include "utils.hpp"
 #include "Math.hpp"
+#include "utils.hpp"
 
 #include "Entity.hpp"
 

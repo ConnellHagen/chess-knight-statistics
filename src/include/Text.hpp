@@ -6,8 +6,9 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 
-#include "utils.hpp"
 #include "Math.hpp"
+#include "utils.hpp"
+
 
 struct Text
 {
@@ -44,29 +45,6 @@ private:
 enum BUTTON_FUNCTION
 {
 	TOGGLE_COLOR_SWITCHER
-};
-
-struct TextButton
-{
-public:
-	TextButton(const Text& p_text, const SDL_Color& p_hover_color, const BUTTON_FUNCTION& p_press_function);
-	TextButton(const Text& p_text, const SDL_Color& p_hover_color, const SDL_Color& p_press_color, const BUTTON_FUNCTION& p_press_function);
-	~TextButton();
-
-	std::vector<BUTTON_FUNCTION> update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time);
-
-	Text text;
-
-	enum color_state{UNPRESSED = 0, PRESSED = 1, HOVER = 2};
-	color_state current_state;
-
-	SDL_Color default_color;
-	SDL_Color hover_color;
-	SDL_Color press_color;
-
-	BUTTON_FUNCTION press_function;
-
-private:
 };
 
 #endif

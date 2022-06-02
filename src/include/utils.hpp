@@ -2,17 +2,21 @@
 #define utils_h
 
 #include <SDL2/SDL.h>
+#include <iostream>
 #include <ctime>
 #include <cmath>
 #include <vector>
 
 #include "Math.hpp"
 
+
 namespace utils
 {
 	float hire_time_in_seconds();
 
 	int random(const int& lower, const int& upper);
+
+	void print_rect(const SDL_Rect& rect);
 
 	Vector2i shift_coords(const Vector2i& coords);
 

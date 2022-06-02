@@ -1,6 +1,6 @@
-#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <vector>
 
 #include "GUI.hpp"
 #include "Entity.hpp"
@@ -14,6 +14,7 @@ ChessTile::ChessTile(const Vector2f& p_pos, SDL_Texture* p_texture, SDL_Rect p_i
 
 ChessTile::~ChessTile()
 {}
+
 
 Divider::Divider(const SDL_Rect& p_border_box)
     :border_box(p_border_box)

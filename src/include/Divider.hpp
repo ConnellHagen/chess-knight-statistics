@@ -1,12 +1,13 @@
 #ifndef divider_h
 #define divider_h
 
-#include <vector>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <vector>
 
 #include "GUI.hpp"
 #include "Entity.hpp"
+
 
 struct ChessTile : public Entity
 {

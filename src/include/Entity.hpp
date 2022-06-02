@@ -8,6 +8,7 @@
 #include "utils.hpp"
 #include "Math.hpp"
 
+
 class Entity
 {
 public:

@@ -1,10 +1,10 @@
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <iostream>
 
-#include "utils.hpp"
 #include "Math.hpp"
+#include "utils.hpp"
 #include "Tile.hpp"
 #include "Text.hpp"
 #include "GUI.hpp"
@@ -109,11 +109,6 @@ void RenderWindow::render(Text& p_text)
 	SDL_RenderCopyEx(renderer, p_text.texture, &src, &dst, 0, NULL, SDL_FLIP_NONE);
 }
 
-void RenderWindow::render(TextButton& p_text)
-{
-	render(p_text.text);
-}
-
 void RenderWindow::render(Divider& p_divider)
 {
 	for(GUI& gui : p_divider.get_gui_list())
@@ -136,20 +131,6 @@ void RenderWindow::render(Divider& p_divider)
 			SDL_RenderCopyEx(renderer, temp_text.texture, &src, &dst, 0, NULL, SDL_FLIP_NONE);
 		}
 
-		for(TextButton& temp_text : gui.get_textbutton_list())
-		{
-			// same for this one
-			SDL_Rect src = temp_text.text.border_box;
-
-			SDL_Rect dst = temp_text.text.border_box;
-			dst.x = (dst.x + p_divider.get_border_box().x) * utils::get_scale().x;
-			dst.y = (dst.y + p_divider.get_border_box().y) * utils::get_scale().y;
-			dst.w *= utils::get_scale().x;
-			dst.h *= utils::get_scale().y;
-
-			SDL_RenderCopyEx(renderer, temp_text.text.texture, &src, &dst, 0, NULL, SDL_FLIP_NONE);
-		}
-
 		for(ToggleButton& temp_button : gui.get_togbutton_list())
 		{
 			SDL_Rect src = temp_button.imgdata;
@@ -164,7 +145,15 @@ void RenderWindow::render(Divider& p_divider)
 			switch(temp_button.current_status)
 			{
 			case HOVER:
-				texture_in_use = temp_button.hover;
+				switch(temp_button.current_state)
+				{
+				case STATE1:
+					texture_in_use = temp_button.state1_hover;
+					break;
+				case STATE2:
+					texture_in_use = temp_button.state2_hover;
+					break;
+				}
 				break;
 
 			case PRESSED:
