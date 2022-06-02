@@ -2,27 +2,21 @@
 #define utils_h
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <ctime>
 #include <cmath>
 #include <vector>
 
+#include "Math.hpp"
+
 namespace utils
 {
-	inline float hire_time_in_seconds()
-	{
-		float t = SDL_GetTicks();
-		t *= 0.001f;
+	float hire_time_in_seconds();
 
-		return t;
-	}
+	int random(const int& lower, const int& upper);
 
-	inline int random(const int& lower, const int& upper)
-	{
-		srand((unsigned int) time (NULL));
-    	return rand() % (upper - lower + 1) + lower;
-	}
+	Vector2i shift_coords(const Vector2i& coords);
 
+	Vector2f get_scale();
 
 	constexpr int ORIG_DISPLAY_WIDTH{1920};
 	constexpr int ORIG_DISPLAY_HEIGHT{1080};

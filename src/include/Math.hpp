@@ -2,6 +2,7 @@
 #define math_h
 
 #include <iostream>
+#include <SDL2/SDL.h>
 
 struct Vector2f
 {

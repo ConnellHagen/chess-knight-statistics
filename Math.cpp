@@ -1,4 +1,4 @@
-#include "utils.hpp"
+#include <SDL2/SDL.h>
 
 #include "Math.hpp"
 

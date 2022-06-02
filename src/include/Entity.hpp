@@ -1,4 +1,5 @@
-#pragma once
+#ifndef entity_h
+#define entity_h
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
@@ -43,3 +44,5 @@ private:
 
 	void build_border_box();
 };
+
+#endif

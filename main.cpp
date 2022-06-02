@@ -10,6 +10,7 @@
 #include "RenderWindow.hpp"
 #include "DBvisualizer.hpp"
 
+
 int utils::display::ORIG_DISPLAY_X;
 int utils::display::ORIG_DISPLAY_Y;
 int utils::display::DISPLAY_WIDTH;
@@ -35,43 +36,82 @@ int main(int argc, char* args[])
 	utils::display::DISPLAY_X = utils::display::ORIG_DISPLAY_X;
 	utils::display::DISPLAY_Y = utils::display::ORIG_DISPLAY_Y;
 
-    RenderWindow window("Pong", utils::display::DISPLAY_WIDTH, utils::display::DISPLAY_HEIGHT);
+    RenderWindow window("Database Visualizer", utils::display::DISPLAY_WIDTH, utils::display::DISPLAY_HEIGHT);
 
     DBvisualizer display(&window);
 
-
-    // SDL_Window *window = SDL_CreateWindow("SDL Test", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, utils::ORIG_DISPLAY_WIDTH, utils::ORIG_DISPLAY_HEIGHT, 0);
-    // if(!window)
-    //     std::cout << "Error: Failed to open window\nSDL Error: '%s'\n" << SDL_GetError() << "\n";
-
-    // SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    // if(!renderer)
-    //     std::cout << "Error: Failed to create renderer\nSDL Error: '%s'\n" << SDL_GetError() << "\n";
+    const float time_step = .016666;
+	float accumulator = 0.0f;
+	float current_time = utils::hire_time_in_seconds();
+	int last_frame_ticks = SDL_GetTicks();
 
     bool running = true;
 
     SDL_Event event;
 
+    // 0: left click
+    std::vector<bool> key_pushes = std::vector<bool>(1, false);
+    Vector2i mouse_coords;
+
     while(running)
     {
-        while(SDL_PollEvent(&event))
-        {
-            switch(event.type)
+        float new_time = utils::hire_time_in_seconds();
+		float loop_time = new_time - current_time;
+		current_time = new_time;
+		accumulator += loop_time;
+
+		while(accumulator >= time_step)
+		{
+            while(SDL_PollEvent(&event))
             {
+                switch(event.type)
+                {
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.sym)
+                    {}
+                    break;
+                case SDL_KEYUP:
+                    switch(event.key.keysym.sym)
+                    {}
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    switch(event.button.button)
+                    {
+                    case SDL_BUTTON_LEFT:
+                        key_pushes[0] = true;
+                        break;
+                    }
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    switch(event.button.button)
+                    {
+                    case SDL_BUTTON_LEFT:
+                        key_pushes[0] = false;
+                        break;
+                    }
+                    break;
+                case SDL_MOUSEMOTION:
+                    mouse_coords = utils::shift_coords(Vector2i(event.motion.x, event.motion.y));
+                    break;
                 case SDL_QUIT:
                     running = false;
                     break;
 
                 default:
                     break;
+                }
             }
+
+            accumulator -= time_step;
+
+			float current_frame_ticks = SDL_GetTicks();
+			const float delta_time = (current_frame_ticks - last_frame_ticks) / 1000;
+
+			// updating
+			display.update(key_pushes, mouse_coords, delta_time);
+
+			last_frame_ticks = SDL_GetTicks();
         }
-
-        // SDL_SetRenderDrawColor(renderer, 0, 255, 255, 255);
-        // SDL_RenderClear(renderer);
-   
-
-        // SDL_RenderPresent(renderer);
         window.clear();
 
 		//rendering

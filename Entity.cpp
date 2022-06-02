@@ -7,6 +7,7 @@
 
 #include "Entity.hpp"
 
+
 Entity::Entity(const Vector2f& p_pos, const Vector2f& p_scale, SDL_Texture* p_texture, const SDL_Rect& p_sheet, const SDL_Rect& p_current, const RENDER_MODE& p_render_mode)
 	:sprite_sheet(p_sheet), current_sprite_frame(p_current), texture(p_texture), pos(p_pos), scale(p_scale), render_mode(p_render_mode)
 {
@@ -31,7 +32,6 @@ void Entity::set_scale(const float& p_w, const float& p_h)
 	scale = Vector2f(p_w, p_h);
 	build_border_box();
 }
-
 
 void Entity::build_border_box()
 {
