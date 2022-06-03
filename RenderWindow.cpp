@@ -145,15 +145,7 @@ void RenderWindow::render(Divider& p_divider)
 			switch(temp_button.current_status)
 			{
 			case HOVER:
-				switch(temp_button.current_state)
-				{
-				case STATE1:
-					texture_in_use = temp_button.state1_hover;
-					break;
-				case STATE2:
-					texture_in_use = temp_button.state2_hover;
-					break;
-				}
+				texture_in_use = temp_button.state_hover_textures[temp_button.current_state];
 				break;
 
 			case PRESSED:
@@ -161,15 +153,36 @@ void RenderWindow::render(Divider& p_divider)
 				break;
 
 			case NONE:
-				switch(temp_button.current_state)
-				{
-				case STATE1:
-					texture_in_use = temp_button.state1;
-					break;
-				case STATE2:
-					texture_in_use = temp_button.state2;
-					break;
-				}
+				texture_in_use = temp_button.state_textures[temp_button.current_state];
+				break;
+			}
+
+			SDL_RenderCopyEx(renderer, texture_in_use, &src, &dst, 0, NULL, SDL_FLIP_NONE);
+		}
+
+		for(PushButton& temp_button : gui.get_pushbutton_list())
+		{
+			SDL_Rect src = temp_button.imgdata;
+
+			SDL_Rect dst = temp_button.border_box;
+			dst.x = (dst.x + p_divider.get_border_box().x) * utils::get_scale().x;
+			dst.y = (dst.y + p_divider.get_border_box().y) * utils::get_scale().y;
+			dst.w *= utils::get_scale().x;
+			dst.h *= utils::get_scale().y;
+
+			SDL_Texture* texture_in_use = nullptr;
+			switch(temp_button.current_status)
+			{
+			case HOVER:
+				texture_in_use = temp_button.hover;
+				break;
+
+			case PRESSED:
+				texture_in_use = temp_button.pressed;
+				break;
+
+			case NONE:
+				texture_in_use = temp_button.idle;
 				break;
 			}
 

@@ -44,7 +44,8 @@ private:
 
 enum BUTTON_FUNCTION
 {
-	TOGGLE_COLOR_SWITCHER
+	SWITCH_COLORS,
+	FLIP_BOARD
 };
 
 #endif

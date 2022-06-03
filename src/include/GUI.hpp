@@ -6,17 +6,12 @@
 #include <SDL2/SDL_ttf.h>
 #include <string>
 #include <vector>
+#include <stdexcept>
 
 #include "Math.hpp"
 #include "utils.hpp"
 #include "Text.hpp"
 
-
-enum STATE
-{
-	STATE1, 
-	STATE2
-};
 
 enum STATUS
 {
@@ -42,6 +37,7 @@ struct Button
 	RENDER_MODE render_mode;
 	
 	SDL_Rect imgdata;
+	SDL_Texture* icon;
 
 	BUTTON_FUNCTION press_function;
 };
@@ -62,20 +58,18 @@ struct PushButton : public Button
 
 struct ToggleButton : public Button
 {
-	ToggleButton(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, SDL_Texture* p_state1, SDL_Texture* p_state2, SDL_Texture* p_state1_hover, SDL_Texture* p_state2_hover, SDL_Texture* p_pressed);
+	ToggleButton(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, std::vector<SDL_Texture*> p_state_textures, std::vector<SDL_Texture*> p_state_hover_textures, SDL_Texture* p_pressed);
 	~ToggleButton();
 
 	std::vector<BUTTON_FUNCTION> update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time);
 	
 	void toggle_state();
 
-	STATE current_state;
+	int current_state;
 	STATUS current_status;
 
-	SDL_Texture* state1;
-	SDL_Texture* state2;
-	SDL_Texture* state1_hover;
-	SDL_Texture* state2_hover;
+	std::vector<SDL_Texture*> state_textures; 	    // textures for each standard state
+	std::vector<SDL_Texture*> state_hover_textures; // textures for each hovered state
 	SDL_Texture* pressed;
 };
 
@@ -86,14 +80,17 @@ struct GUI
 
 	inline std::vector<Text> get_text_list(){ return text_list; }
 	inline std::vector<ToggleButton> get_togbutton_list(){ return togbutton_list; }
+	inline std::vector<PushButton> get_pushbutton_list(){ return pushbutton_list; }
 
 	void add(const Text& p_text);
 	void add(const ToggleButton& p_button);
+	void add(const PushButton& p_button);
 
 	std::vector<BUTTON_FUNCTION> update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time);
 
 	std::vector<Text> text_list;
 	std::vector<ToggleButton> togbutton_list;
+	std::vector<PushButton> pushbutton_list;
 };
 
 #endif

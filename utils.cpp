@@ -42,4 +42,3 @@ Vector2f utils::get_scale()
 {
     return Vector2f(display::DISPLAY_WIDTH / static_cast<float>(ORIG_DISPLAY_WIDTH), display::DISPLAY_HEIGHT / static_cast<float>(ORIG_DISPLAY_HEIGHT));
 }
-	
