@@ -11,7 +11,7 @@
 
 struct ChessTile : public Entity
 {
-    ChessTile(const Vector2f& p_pos, SDL_Texture* p_texture, SDL_Rect p_imgdata);
+    ChessTile(const Vector2f& p_pos, SDL_Texture* p_texture);
     ~ChessTile();
 
     inline void reset_position(){ Entity::set_pos(orig_pos); }

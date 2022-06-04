@@ -26,7 +26,6 @@ private:
     RenderWindow* window;
 
     SDL_Texture* background_t;
-    SDL_Rect background_inf;
     Background background;
 
     SDL_Texture* light_square;

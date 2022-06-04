@@ -22,7 +22,7 @@ enum STATUS
 
 struct Button
 {
-	Button(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function);
+	Button(const SDL_Rect& p_original_box, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function);
 	~Button();
 
 	void build_border_box();
@@ -36,15 +36,12 @@ struct Button
 	SDL_Rect original_box;
 	RENDER_MODE render_mode;
 	
-	SDL_Rect imgdata;
-	SDL_Texture* icon;
-
 	BUTTON_FUNCTION press_function;
 };
 
 struct PushButton : public Button
 {
-	PushButton(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, SDL_Texture* p_idle, SDL_Texture* p_hover, SDL_Texture* p_pressed);
+	PushButton(const SDL_Rect& p_original_box, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, SDL_Texture* p_idle, SDL_Texture* p_hover, SDL_Texture* p_pressed);
 	~PushButton();
 
 	std::vector<BUTTON_FUNCTION> update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time);
@@ -58,7 +55,7 @@ struct PushButton : public Button
 
 struct ToggleButton : public Button
 {
-	ToggleButton(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, std::vector<SDL_Texture*> p_state_textures, std::vector<SDL_Texture*> p_state_hover_textures, SDL_Texture* p_pressed);
+	ToggleButton(const SDL_Rect& p_original_box, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, std::vector<SDL_Texture*> p_state_textures, std::vector<SDL_Texture*> p_state_hover_textures, SDL_Texture* p_pressed);
 	~ToggleButton();
 
 	std::vector<BUTTON_FUNCTION> update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time);

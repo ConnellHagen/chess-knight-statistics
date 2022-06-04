@@ -12,8 +12,8 @@
 #include "GUI.hpp"
 
 
-Button::Button(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function)
-	:original_box(p_original_box), imgdata(p_imgdata), render_mode(p_render_mode), press_function(p_press_function)
+Button::Button(const SDL_Rect& p_original_box, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function)
+	:original_box(p_original_box), render_mode(p_render_mode), press_function(p_press_function)
 {
 	build_border_box();
 }
@@ -82,8 +82,8 @@ void Button::is_mouse_clicked(const std::vector<bool>& key_pushes)
 
 
 // buttons which have a constant function activated on every click
-PushButton::PushButton(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, SDL_Texture* p_idle, SDL_Texture* p_hover, SDL_Texture* p_pressed)
-	:Button(p_original_box, p_imgdata, p_render_mode, p_press_function), idle(p_idle), hover(p_hover), pressed(p_pressed)
+PushButton::PushButton(const SDL_Rect& p_original_box, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, SDL_Texture* p_idle, SDL_Texture* p_hover, SDL_Texture* p_pressed)
+	:Button(p_original_box, p_render_mode, p_press_function), idle(p_idle), hover(p_hover), pressed(p_pressed)
 {
 	Button::build_border_box();
 }
@@ -124,8 +124,8 @@ std::vector<BUTTON_FUNCTION> PushButton::update(const std::vector<bool>& key_pus
 
 
 // buttons which toggle between a number of states upon click
-ToggleButton::ToggleButton(const SDL_Rect& p_original_box, const SDL_Rect& p_imgdata, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, std::vector<SDL_Texture*> p_state_textures, std::vector<SDL_Texture*> p_state_hover_textures, SDL_Texture* p_pressed)
-	:Button(p_original_box, p_imgdata, p_render_mode, p_press_function), current_state(0), current_status(NONE), state_textures(p_state_textures), state_hover_textures(p_state_hover_textures), pressed(p_pressed)
+ToggleButton::ToggleButton(const SDL_Rect& p_original_box, const RENDER_MODE& p_render_mode, const BUTTON_FUNCTION& p_press_function, std::vector<SDL_Texture*> p_state_textures, std::vector<SDL_Texture*> p_state_hover_textures, SDL_Texture* p_pressed)
+	:Button(p_original_box, p_render_mode, p_press_function), current_state(0), current_status(NONE), state_textures(p_state_textures), state_hover_textures(p_state_hover_textures), pressed(p_pressed)
 {
 	if(state_textures.size() != state_hover_textures.size())
 	{

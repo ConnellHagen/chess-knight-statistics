@@ -65,7 +65,7 @@ void RenderWindow::render(Entity p_entity)
 	dst.w *= utils::get_scale().x;
 	dst.h *= utils::get_scale().y;
 
-	SDL_RenderCopyEx(renderer, p_entity.get_texture(), &src, &dst, /*static_cast<double>(p_entity.get_angle())*/0, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, p_entity.get_texture(), &src, &dst, 0, NULL, SDL_FLIP_NONE);
 }
 
 void RenderWindow::render(Background& p_background)
@@ -79,26 +79,24 @@ void RenderWindow::render(Background& p_background)
 
 void RenderWindow::render(Tile& p_tile)
 {
-	SDL_Rect src;
-	src.x = p_tile.get_original_image().x;
-	src.y = p_tile.get_original_image().y;
-	src.w = p_tile.get_original_image().w;
-	src.h = p_tile.get_original_image().h;
+	int w, h;
+	SDL_QueryTexture(p_tile.get_texture(), NULL, NULL, &w, &h);
+	SDL_Rect src = {0, 0, w, h};
 
 	SDL_Rect dst;
 	dst.x = p_tile.get_pos().x * utils::get_scale().x;
 	dst.y = p_tile.get_pos().y * utils::get_scale().y;
-	dst.w = std::ceil(p_tile.get_original_image().w * p_tile.get_scale().x * utils::get_scale().x);
-	dst.h = std::ceil(p_tile.get_original_image().h * p_tile.get_scale().y * utils::get_scale().y);
+	dst.w = std::ceil(w * p_tile.get_scale().x * utils::get_scale().x);
+	dst.h = std::ceil(h * p_tile.get_scale().y * utils::get_scale().y);
 
 	SDL_RenderCopy(renderer, p_tile.get_texture(), &src, &dst);
 }
 
 void RenderWindow::render(Text& p_text)
 {
-	SDL_Rect src = p_text.border_box;
-	src.x = 0;
-	src.y = 0;
+	int w, h;
+	SDL_QueryTexture(p_text.texture, NULL, NULL, &w, &h);
+	SDL_Rect src = {0, 0, w, h};
 
 	SDL_Rect dst = p_text.border_box;
 	dst.x *= utils::get_scale().x;
@@ -115,16 +113,13 @@ void RenderWindow::render(Divider& p_divider)
 	{
 		for(Text& temp_text : gui.get_text_list())
 		{
-			// this is probably wrong i havent tested it and it should be imgdata i think
-			SDL_Rect src;
-			src.x = temp_text.border_box.x;
-			src.y = temp_text.border_box.y;
-			src.w = temp_text.border_box.w;
-			src.h = temp_text.border_box.h;
+			int w, h;
+			SDL_QueryTexture(temp_text.texture, NULL, NULL, &w, &h);
+			SDL_Rect src = {0, 0, w, h};
 
 			SDL_Rect dst = temp_text.border_box;
-			dst.x = (dst.x + p_divider.get_border_box().x) * utils::get_scale().x;
-			dst.y = (dst.y + p_divider.get_border_box().y) * utils::get_scale().y;
+			dst.x *= utils::get_scale().x;
+			dst.y *= utils::get_scale().y;
 			dst.w *= utils::get_scale().x;
 			dst.h *= utils::get_scale().y;
 
@@ -133,14 +128,6 @@ void RenderWindow::render(Divider& p_divider)
 
 		for(ToggleButton& temp_button : gui.get_togbutton_list())
 		{
-			SDL_Rect src = temp_button.imgdata;
-
-			SDL_Rect dst = temp_button.border_box;
-			dst.x = (dst.x + p_divider.get_border_box().x) * utils::get_scale().x;
-			dst.y = (dst.y + p_divider.get_border_box().y) * utils::get_scale().y;
-			dst.w *= utils::get_scale().x;
-			dst.h *= utils::get_scale().y;
-
 			SDL_Texture* texture_in_use = nullptr;
 			switch(temp_button.current_status)
 			{
@@ -157,19 +144,21 @@ void RenderWindow::render(Divider& p_divider)
 				break;
 			}
 
-			SDL_RenderCopyEx(renderer, texture_in_use, &src, &dst, 0, NULL, SDL_FLIP_NONE);
-		}
+			int w, h;
+			SDL_QueryTexture(texture_in_use, NULL, NULL, &w, &h);
 
-		for(PushButton& temp_button : gui.get_pushbutton_list())
-		{
-			SDL_Rect src = temp_button.imgdata;
-
+			SDL_Rect src = {0, 0, w, h};
 			SDL_Rect dst = temp_button.border_box;
 			dst.x = (dst.x + p_divider.get_border_box().x) * utils::get_scale().x;
 			dst.y = (dst.y + p_divider.get_border_box().y) * utils::get_scale().y;
 			dst.w *= utils::get_scale().x;
 			dst.h *= utils::get_scale().y;
 
+			SDL_RenderCopyEx(renderer, texture_in_use, &src, &dst, 0, NULL, SDL_FLIP_NONE);
+		}
+
+		for(PushButton& temp_button : gui.get_pushbutton_list())
+		{
 			SDL_Texture* texture_in_use = nullptr;
 			switch(temp_button.current_status)
 			{
@@ -185,6 +174,16 @@ void RenderWindow::render(Divider& p_divider)
 				texture_in_use = temp_button.idle;
 				break;
 			}
+
+			int w, h;
+			SDL_QueryTexture(texture_in_use, NULL, NULL, &w, &h);
+
+			SDL_Rect src = {0, 0, w, h};
+			SDL_Rect dst = temp_button.border_box;
+			dst.x = (dst.x + p_divider.get_border_box().x) * utils::get_scale().x;
+			dst.y = (dst.y + p_divider.get_border_box().y) * utils::get_scale().y;
+			dst.w *= utils::get_scale().x;
+			dst.h *= utils::get_scale().y;
 
 			SDL_RenderCopyEx(renderer, texture_in_use, &src, &dst, 0, NULL, SDL_FLIP_NONE);
 		}

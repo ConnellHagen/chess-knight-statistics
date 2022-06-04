@@ -8,8 +8,8 @@
 #include "Divider.hpp"
 
 
-ChessTile::ChessTile(const Vector2f& p_pos, SDL_Texture* p_texture, SDL_Rect p_imgdata)
-    :Entity(p_pos, Vector2f(1, 1), p_texture, p_imgdata, p_imgdata, TOP_CENTER), orig_pos(p_pos)
+ChessTile::ChessTile(const Vector2f& p_pos, SDL_Texture* p_texture)
+    :Entity(p_pos, Vector2f(1, 1), p_texture, TOP_CENTER), orig_pos(p_pos)
 {}
 
 ChessTile::~ChessTile()

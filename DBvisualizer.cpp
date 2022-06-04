@@ -16,7 +16,6 @@ DBvisualizer::DBvisualizer(RenderWindow* p_window)
 {
     // loading background and textures
     background_t = window->load_texture("img/background.png");
-    background_inf = {0, 0, 1920, 1080};
 
     light_square = window->load_texture("img/light-square.png");
     dark_square = window->load_texture("img/dark-square.png");
@@ -32,22 +31,20 @@ DBvisualizer::DBvisualizer(RenderWindow* p_window)
     board_flip_pressed = window->load_texture("img/buttons/board-flip-pressed.png");
 
 
-    background = Background(Vector2f(1, 1), background_t, background_inf);
+    background = Background(Vector2f(1, 1), background_t);
 
     GUI buttons_gui;
 
     ToggleButton color_switcher
     (
-        SDL_Rect{80, 80, 200, 200}, SDL_Rect{0, 0, 32, 32},
-        TOP_LEFT, SWITCH_COLORS,
+        SDL_Rect{80, 80, 200, 200}, TOP_LEFT, SWITCH_COLORS,
         std::vector<SDL_Texture*>{color_switch_white, color_switch_black},
         std::vector<SDL_Texture*>{color_switch_white_hover, color_switch_black_hover},
         color_switch_pressed
     );
     PushButton board_flipper
     (
-        SDL_Rect{320, 80, 200, 200}, SDL_Rect{0, 0, 32, 32},
-        TOP_LEFT, FLIP_BOARD,
+        SDL_Rect{320, 80, 200, 200}, TOP_LEFT, FLIP_BOARD,
         board_flip, board_flip_hover, board_flip_pressed
     );
     buttons_gui.add(color_switcher);

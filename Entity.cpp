@@ -14,6 +14,14 @@ Entity::Entity(const Vector2f& p_pos, const Vector2f& p_scale, SDL_Texture* p_te
 	build_border_box();
 }
 
+Entity::Entity(const Vector2f& p_pos, const Vector2f& p_scale, SDL_Texture* p_texture, const RENDER_MODE& p_render_mode)
+	:texture(p_texture), pos(p_pos), scale(p_scale), render_mode(p_render_mode)
+{
+	int w, h;
+	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+	current_sprite_frame = sprite_sheet = {0, 0, w, h};
+}
+
 void Entity::set_pos(const Vector2f& p_pos)
 {
 	pos = p_pos;
