@@ -78,7 +78,7 @@ struct GUI
 	inline std::vector<Text> get_text_list(){ return text_list; }
 	inline std::vector<ToggleButton> get_togbutton_list(){ return togbutton_list; }
 	inline std::vector<PushButton> get_pushbutton_list(){ return pushbutton_list; }
-
+	
 	void add(const Text& p_text);
 	void add(const ToggleButton& p_button);
 	void add(const PushButton& p_button);

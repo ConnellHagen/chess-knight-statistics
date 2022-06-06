@@ -41,6 +41,12 @@ private:
     SDL_Texture* board_flip_hover;
     SDL_Texture* board_flip_pressed;
 
+    SDL_Texture* square_ignore_off;
+    SDL_Texture* square_ignore_on;
+    SDL_Texture* square_ignore_off_hover;
+    SDL_Texture* square_ignore_on_hover;
+    SDL_Texture* square_ignore_pressed;
+
     Divider board_display;
     Divider buttons;
 };

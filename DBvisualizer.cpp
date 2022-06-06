@@ -30,6 +30,12 @@ DBvisualizer::DBvisualizer(RenderWindow* p_window)
     board_flip_hover = window->load_texture("img/buttons/board-flip-hover.png");
     board_flip_pressed = window->load_texture("img/buttons/board-flip-pressed.png");
 
+    square_ignore_off = window->load_texture("img/buttons/square-ignore-off.png");
+    square_ignore_on = window->load_texture("img/buttons/square-ignore-on.png");
+    square_ignore_off_hover = window->load_texture("img/buttons/square-ignore-off-hover.png");
+    square_ignore_on_hover = window->load_texture("img/buttons/square-ignore-on-hover.png");
+    square_ignore_pressed = window->load_texture("img/buttons/square-ignore-pressed.png");
+
 
     background = Background(Vector2f(1, 1), background_t);
 
@@ -47,8 +53,16 @@ DBvisualizer::DBvisualizer(RenderWindow* p_window)
         SDL_Rect{320, 80, 200, 200}, TOP_LEFT, FLIP_BOARD,
         board_flip, board_flip_hover, board_flip_pressed
     );
+    ToggleButton starting_square_ignorer
+    (
+        SDL_Rect{560, 80, 200, 200}, TOP_LEFT, TOGGLE_STARTING_SQUARE_IGNORE,
+        std::vector<SDL_Texture*>{square_ignore_off, square_ignore_on},
+        std::vector<SDL_Texture*>{square_ignore_off_hover, square_ignore_on_hover},
+        square_ignore_pressed
+    );
     buttons_gui.add(color_switcher);
     buttons_gui.add(board_flipper);
+    buttons_gui.add(starting_square_ignorer);
 
     buttons.add_gui(buttons_gui);
 
@@ -68,6 +82,11 @@ DBvisualizer::~DBvisualizer()
     SDL_DestroyTexture(board_flip);
     SDL_DestroyTexture(board_flip_hover);
     SDL_DestroyTexture(board_flip_pressed);
+    SDL_DestroyTexture(square_ignore_off);
+    SDL_DestroyTexture(square_ignore_on);
+    SDL_DestroyTexture(square_ignore_off_hover);
+    SDL_DestroyTexture(square_ignore_on_hover);
+    SDL_DestroyTexture(square_ignore_pressed);
 }
 
 std::vector<BUTTON_FUNCTION> DBvisualizer::update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time)
