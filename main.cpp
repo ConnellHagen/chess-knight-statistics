@@ -42,7 +42,7 @@ int main(int argc, char* args[])
 
     RenderWindow window("Database Visualizer", utils::display::DISPLAY_WIDTH, utils::display::DISPLAY_HEIGHT);
 
-    DBvisualizer display(&window);
+    DBVisualizer display(&window);
 
     const float time_step = .016666;
 	float accumulator = 0.0f;

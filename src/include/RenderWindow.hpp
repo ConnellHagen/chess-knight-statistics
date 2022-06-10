@@ -11,6 +11,7 @@
 #include "Tile.hpp"
 #include "Text.hpp"
 #include "Entity.hpp"
+#include "ChessTile.hpp"
 #include "GUI.hpp"
 #include "Divider.hpp"
 
@@ -29,7 +30,8 @@ public:
 	void render(Background& p_background);
 	void render(Tile& p_tile);
 	void render(Text& p_text);
-	void render(Divider& p_divider);
+	void render(ChessBoardDivider& p_divider);
+	void render(GUIDivider& p_divider);
 
 	void display();
 

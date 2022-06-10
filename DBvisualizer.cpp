@@ -4,15 +4,16 @@
 
 #include "utils.hpp"
 #include "Tile.hpp"
+#include "ChessTile.hpp"
 #include "GUI.hpp"
 #include "Divider.hpp"
 #include "RenderWindow.hpp"
 
-#include "DBvisualizer.hpp"
+#include "DBVisualizer.hpp"
 
 
-DBvisualizer::DBvisualizer(RenderWindow* p_window)
-    :window(p_window), board_display(SDL_Rect{0, 0, 1080, 1080}), buttons({1080, 0, 840, 1080})
+DBVisualizer::DBVisualizer(RenderWindow* p_window)
+    :window(p_window), board_display(SDL_Rect{0, 0, 1080, 1080}), buttons(SDL_Rect{1080, 0, 840, 1080})
 {
     // loading background and textures
     background_t = window->load_texture("img/background.png");
@@ -60,16 +61,40 @@ DBvisualizer::DBvisualizer(RenderWindow* p_window)
         std::vector<SDL_Texture*>{square_ignore_off_hover, square_ignore_on_hover},
         square_ignore_pressed
     );
+
     buttons_gui.add(color_switcher);
     buttons_gui.add(board_flipper);
     buttons_gui.add(starting_square_ignorer);
 
     buttons.add_gui(buttons_gui);
 
-    // board_display.add_chess_tile();
+    for(int i = 0; i < 8; i++)
+    {
+        for(int j = 0; j < 8; j++)
+        {
+            Vector2f tile_pos;
+            const Vector2f tile_scale(4, 4);
+
+            int w;
+            SDL_QueryTexture(light_square, NULL, NULL, &w, NULL);
+            const int tile_width = w * tile_scale.x;
+
+            const Vector2f i_vec(1.0f * tile_width / 2, 0.5f * tile_width / 2);
+            const Vector2f j_vec(-1.0f * tile_width / 2, 0.5f * tile_width / 2);
+
+            // translation from chessboard coords (0-7, 0-7) to the on screen diagonal board
+            tile_pos.x = i_vec.x * i + j_vec.x * j;
+            tile_pos.y = i_vec.y * i + j_vec.y * j;
+
+            tile_pos.x += board_display.get_border_box().w / 2;
+            tile_pos.y += board_display.get_border_box().h / 2;
+
+            board_display.add_chess_tile(ChessTile(tile_pos, tile_scale, (i + j) % 2 == 0 ? light_square : dark_square));
+        }
+    }
 }
 
-DBvisualizer::~DBvisualizer()
+DBVisualizer::~DBVisualizer()
 {
     SDL_DestroyTexture(light_square);
     SDL_DestroyTexture(dark_square);
@@ -89,7 +114,7 @@ DBvisualizer::~DBvisualizer()
     SDL_DestroyTexture(square_ignore_pressed);
 }
 
-std::vector<BUTTON_FUNCTION> DBvisualizer::update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time)
+std::vector<BUTTON_FUNCTION> DBVisualizer::update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time)
 {
     // sets the static variable `mouse_clicked` to see when the mouse transitions from unpressed to pressed.
     Button::is_mouse_clicked(key_pushes);
@@ -108,7 +133,7 @@ std::vector<BUTTON_FUNCTION> DBvisualizer::update(const std::vector<bool>& key_p
     return functions;
 }
 
-void DBvisualizer::render()
+void DBVisualizer::render()
 {
     window->render(background);
     window->render(board_display);

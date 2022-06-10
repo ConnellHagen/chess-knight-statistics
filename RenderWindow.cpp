@@ -7,6 +7,8 @@
 #include "utils.hpp"
 #include "Tile.hpp"
 #include "Text.hpp"
+#include "Entity.hpp"
+#include "ChessTile.hpp"
 #include "GUI.hpp"
 #include "Divider.hpp"
 
@@ -53,11 +55,7 @@ void RenderWindow::clear()
 
 void RenderWindow::render(Entity p_entity)
 {
-	SDL_Rect src;
-	src.x = p_entity.get_sprite_frame().x;
-	src.y = p_entity.get_sprite_frame().y;
-	src.w = p_entity.get_sprite_frame().w;
-	src.h = p_entity.get_sprite_frame().h;
+	SDL_Rect src = p_entity.get_sprite_frame();
 
 	SDL_Rect dst = p_entity.get_border_box();
 	dst.x *= utils::get_scale().x;
@@ -106,8 +104,16 @@ void RenderWindow::render(Text& p_text)
 
 	SDL_RenderCopyEx(renderer, p_text.texture, &src, &dst, 0, NULL, SDL_FLIP_NONE);
 }
+	
+void RenderWindow::render(ChessBoardDivider& p_divider)
+{
+	for(ChessTile& chess_tile : p_divider.get_chess_tile_list())
+	{
+		render(static_cast<Entity>(chess_tile));
+	}
+}
 
-void RenderWindow::render(Divider& p_divider)
+void RenderWindow::render(GUIDivider& p_divider)
 {
 	for(GUI& gui : p_divider.get_gui_list())
 	{
@@ -188,13 +194,8 @@ void RenderWindow::render(Divider& p_divider)
 			SDL_RenderCopyEx(renderer, texture_in_use, &src, &dst, 0, NULL, SDL_FLIP_NONE);
 		}
 	}
-
-	for(ChessTile& chess_tile : p_divider.get_chess_tile_list())
-	{
-		render(static_cast<Entity>(chess_tile));
-	}
 }
-	
+
 void RenderWindow::display()
 {
 	SDL_RenderPresent(renderer);

@@ -2,28 +2,29 @@
 #include <SDL2/SDL_image.h>
 #include <vector>
 
-#include "GUI.hpp"
 #include "Entity.hpp"
+#include "ChessTile.hpp"
+#include "GUI.hpp"
 
 #include "Divider.hpp"
-
-
-ChessTile::ChessTile(const Vector2f& p_pos, SDL_Texture* p_texture)
-    :Entity(p_pos, Vector2f(1, 1), p_texture, TOP_CENTER), orig_pos(p_pos)
-{}
-
-ChessTile::~ChessTile()
-{}
 
 
 Divider::Divider(const SDL_Rect& p_border_box)
     :border_box(p_border_box)
 {}
 
+// apparently you need to define a virtual destructor ??
 Divider::~Divider()
 {}
 
-std::vector<BUTTON_FUNCTION> Divider::update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time)
+GUIDivider::GUIDivider(const SDL_Rect& p_border_box)
+    :Divider(p_border_box)
+{}
+
+GUIDivider::~GUIDivider()
+{}
+
+std::vector<BUTTON_FUNCTION> GUIDivider::update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time)
 {
     Vector2i divider_coords = Vector2i(border_box.x, border_box.y);
 
@@ -39,6 +40,22 @@ std::vector<BUTTON_FUNCTION> Divider::update(const std::vector<bool>& key_pushes
             functions.push_back(temp_function);
         }
     }
+
+    return functions;
+}
+
+ChessBoardDivider::ChessBoardDivider(const SDL_Rect& p_border_box)
+    :Divider(p_border_box)
+{}
+
+ChessBoardDivider::~ChessBoardDivider()
+{}
+
+std::vector<BUTTON_FUNCTION> ChessBoardDivider::update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time)
+{
+    std::vector<BUTTON_FUNCTION> functions;
+
+    // possible (?) functions include clicking on a square making it display 
 
     return functions;
 }

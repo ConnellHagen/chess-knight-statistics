@@ -32,7 +32,7 @@ struct Vector2i
 	:x(p_x), y(p_y)
 	{}
 
-	inline void print(){std::cout << x << ", " << y << "\n";}
+	inline void print() {std::cout << x << ", " << y << "\n";}
 };
 
 bool contains_point(const SDL_Rect& rect, const Vector2i& point);

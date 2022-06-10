@@ -7,16 +7,17 @@
 
 #include "utils.hpp"
 #include "Tile.hpp"
+#include "ChessTile.hpp"
 #include "GUI.hpp"
 #include "Divider.hpp"
 #include "RenderWindow.hpp"
 
 
-class DBvisualizer
+class DBVisualizer
 {
 public:
-    DBvisualizer(RenderWindow* window);
-    ~DBvisualizer();
+    DBVisualizer(RenderWindow* window);
+    ~DBVisualizer();
 
     std::vector<BUTTON_FUNCTION> update(const std::vector<bool>& key_pushes, const Vector2i& mouse_coords, const float& delta_time);
 
@@ -47,8 +48,8 @@ private:
     SDL_Texture* square_ignore_on_hover;
     SDL_Texture* square_ignore_pressed;
 
-    Divider board_display;
-    Divider buttons;
+    ChessBoardDivider board_display;
+    GUIDivider buttons;
 };
 
 #endif

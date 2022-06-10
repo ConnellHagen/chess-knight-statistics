@@ -19,7 +19,9 @@ Entity::Entity(const Vector2f& p_pos, const Vector2f& p_scale, SDL_Texture* p_te
 {
 	int w, h;
 	SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-	current_sprite_frame = sprite_sheet = {0, 0, w, h};
+	current_sprite_frame = sprite_sheet = SDL_Rect{0, 0, w, h};
+
+	build_border_box();
 }
 
 void Entity::set_pos(const Vector2f& p_pos)
